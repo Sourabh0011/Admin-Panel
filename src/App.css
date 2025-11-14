@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+/* Mobile touch scrolling + safe-area support (append to src/index.css) */
+[data-touch-scroll] {
+  -webkit-overflow-scrolling: touch; /* smooth native momentum scrolling on iOS */
+  overflow-scrolling: touch;
+}
+
+/* avoid bottom-nav overlap on devices with safe area (notch) */
+:root { --safe-bottom: env(safe-area-inset-bottom); }
+body { padding-bottom: calc(var(--safe-bottom, 0px)); }

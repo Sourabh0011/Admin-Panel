@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DataTable from "./components/DataTable";
-
+import logo from "./assets/kirshify.jpeg"; 
 
 // Kirshify Admin Frontend (clean, plain JS + React)
 
@@ -53,7 +53,7 @@ const mockFetchUsers = async () => {
 
 // Layout components
 const Topbar = ({ name, onLogout, onToggle }) => (
-  <div className="flex items-center justify-between bg-gradient-to-r from-green-600 to-emerald-500 text-white p-4 rounded-xl shadow-md">
+  <div className="flex items-center justify-between bg-gradient-to-r from-green-600 to-emerald-500 text-white p-3 sm:p-4 rounded-xl shadow-md">
     <div className="flex items-center gap-3">
       <button className="md:hidden p-2 rounded-md bg-white/10 hover:bg-white/20" onClick={onToggle} aria-label="open menu">
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
@@ -62,7 +62,8 @@ const Topbar = ({ name, onLogout, onToggle }) => (
       </button>
       <div>
         <div className="text-xs opacity-80">Welcome back</div>
-        <div className="font-semibold">{name || "—"}</div>
+        
+        <div className="font-semibold text-sm sm:text-base">{name || "—"}</div>
       </div>
     </div>
     <div className="flex items-center gap-3">
@@ -70,7 +71,7 @@ const Topbar = ({ name, onLogout, onToggle }) => (
         <IconStats />
         <div className="text-sm">Live</div>
       </div>
-      <button onClick={onLogout} className="bg-white text-green-600 font-semibold px-3 py-2 rounded-md shadow-sm">
+      <button onClick={onLogout} className="bg-white text-green-600 font-semibold px-3 py-2 rounded-md shadow-sm hidden sm:inline-block">
         Logout
       </button>
     </div>
@@ -81,11 +82,10 @@ const Sidebar = ({ active, onNav }) => (
   <aside className="w-72 bg-white/5 backdrop-blur-md p-4 rounded-xl space-y-4">
     <div className="flex items-center gap-3">
       <div className="p-2 rounded-lg bg-white/10">
-        <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none">
-          <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <img src={logo} alt="Kirshify" className="w-10 h-auto rounded-3xl border-1 black-indigo-500" />
       </div>
       <div>
+        
         <div className="text-sm opacity-80">Kirshify</div>
         <div className="font-bold text-lg">Admin Panel</div>
       </div>
@@ -146,9 +146,7 @@ const LoginPage = ({ onLogin }) => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8">
         <div className="flex items-center gap-4 mb-6">
           <div className="p-3 rounded-lg bg-emerald-50">
-            <svg className="w-8 h-8 text-emerald-600" viewBox="0 0 24 24" fill="none">
-              <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <img src={logo} alt="Kirshify" className="w-15 h-auto rounded-4xl border-1 black-indigo-500" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">Kirshify Admin</h1>
@@ -243,10 +241,10 @@ const DashboardPage = ({ name }) => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-xl bg-white/5">
           <h3 className="font-semibold mb-3">Quick Actions</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button className="p-3 rounded-lg bg-emerald-600 text-white font-medium">Invite Admin</button>
-            <button className="p-3 rounded-lg bg-white/8">Export Users</button>
-            <button className="p-3 rounded-lg bg-white/8">Run Backup</button>
-            <button className="p-3 rounded-lg bg-white/8">View Audit Logs</button>
+            <button className="p-3 rounded-lg bg-emerald-600 text-white font-medium w-full">Invite Admin</button>
+            <button className="p-3 rounded-lg bg-white/8 w-full">Export Users</button>
+            <button className="p-3 rounded-lg bg-white/8 w-full">Run Backup</button>
+            <button className="p-3 rounded-lg bg-white/8 w-full">View Audit Logs</button>
           </div>
         </motion.div>
 
@@ -287,40 +285,42 @@ const UsersPage = () => {
       </div>
 
       <div className="rounded-xl overflow-hidden shadow-sm bg-white/5">
-        <table className="w-full table-auto">
-          <thead className="text-xs text-left opacity-70 uppercase bg-white/6">
-            <tr>
-              <th className="p-3">Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3">Role</th>
-              <th className="p-3">Last Login</th>
-              <th className="p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+        <div className="overflow-x-auto" data-touch-scroll>
+          <table className="w-full table-auto min-w-[640px]">
+            <thead className="text-xs text-left opacity-70 uppercase bg-white/6">
               <tr>
-                <td colSpan={5} className="p-6 text-center">
-                  Loading…
-                </td>
+                <th className="p-3">Name</th>
+                <th className="p-3">Email</th>
+                <th className="p-3">Role</th>
+                <th className="p-3">Last Login</th>
+                <th className="p-3">Actions</th>
               </tr>
-            ) : (
-              users.map((u) => (
-                <tr key={u.id} className="border-t border-white/6 hover:bg-white/3 transition-colors">
-                  <td className="p-3">{u.name}</td>
-                  <td className="p-3 text-sm opacity-80">{u.email}</td>
-                  <td className="p-3">
-                    <span className={`px-2 py-1 rounded-full text-xs ${u.role === "admin" ? "bg-emerald-600 text-white" : "bg-white/8"}`}>{u.role}</span>
-                  </td>
-                  <td className="p-3 text-sm opacity-80">{u.lastLogin}</td>
-                  <td className="p-3">
-                    <button className="px-3 py-1 rounded-md bg-white/8">Edit</button>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="p-6 text-center">
+                    Loading…
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                users.map((u) => (
+                  <tr key={u.id} className="border-t border-white/6 hover:bg-white/3 transition-colors">
+                    <td className="p-3">{u.name}</td>
+                    <td className="p-3 text-sm opacity-80">{u.email}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs ${u.role === "admin" ? "bg-emerald-600 text-white" : "bg-white/8"}`}>{u.role}</span>
+                    </td>
+                    <td className="p-3 text-sm opacity-80">{u.lastLogin}</td>
+                    <td className="p-3">
+                      <button className="px-3 py-1 rounded-md bg-white/8">Edit</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -347,7 +347,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         <div className="md:flex md:gap-6">
           {/* Sidebar (desktop) */}
@@ -358,14 +358,17 @@ export default function App() {
           {/* Mobile Drawer */}
           <AnimatePresence>
             {sidebarOpen && (
-              <motion.div initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="fixed inset-y-0 left-0 z-50 w-72 p-4 md:hidden">
-                <Sidebar
-                  active={route}
-                  onNav={(r) => {
-                    setRoute(r);
-                    setSidebarOpen(false);
-                  }}
-                />
+              <motion.div className="fixed inset-0 z-50 md:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
+                <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: "spring", stiffness: 260, damping: 28 }} className="relative w-72 p-4 bg-white h-full">
+                  <Sidebar
+                    active={route}
+                    onNav={(r) => {
+                      setRoute(r);
+                      setSidebarOpen(false);
+                    }}
+                  />
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -377,9 +380,18 @@ export default function App() {
             <div className="mt-6">
               <AnimatePresence mode="wait">
                 <motion.div key={route} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}>
-                  {route === "dashboard" && <DashboardPage name={user.name} />}
-                  {route === "users" && <DataTable />}
-                  {route === "settings" && <div className="p-4 rounded-xl bg-white/5">Settings coming soon — enable MFA, manage roles, and connect MongoDB.</div>}
+                  {/* wrap wide content so it can scroll on mobile */}
+                  <div className="space-y-6">
+                    {route === "dashboard" && <DashboardPage name={user.name} />}
+                    {route === "users" && (
+                      <div className="overflow-x-auto -mx-2 px-2" data-touch-scroll>
+                        <div className="min-w-full">
+                          <DataTable />
+                        </div>
+                      </div>
+                    )}
+                    {route === "settings" && <div className="p-4 rounded-xl bg-white/5">Settings coming soon — enable MFA, manage roles, and connect MongoDB.</div>}
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -387,8 +399,23 @@ export default function App() {
         </div>
       </div>
 
+      {/* Mobile bottom nav */}
+      <div className="fixed left-0 right-0 bottom-4 mx-4 md:hidden">
+        <div className="bg-white/95 backdrop-blur-md rounded-xl p-2 shadow-md flex justify-around items-center">
+          <button onClick={() => setRoute("dashboard")} className={`flex-1 py-2 text-center ${route === "dashboard" ? "text-emerald-600 font-semibold" : "text-gray-600"}`}>
+            <div className="text-xs">Dashboard</div>
+          </button>
+          <button onClick={() => setRoute("users")} className={`flex-1 py-2 text-center ${route === "users" ? "text-emerald-600 font-semibold" : "text-gray-600"}`}>
+            <div className="text-xs">Users</div>
+          </button>
+          <button onClick={() => setRoute("settings")} className={`flex-1 py-2 text-center ${route === "settings" ? "text-emerald-600 font-semibold" : "text-gray-600"}`}>
+            <div className="text-xs">Settings</div>
+          </button>
+        </div>
+      </div>
+
       {/* Decorative bottom-right floating element */}
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="fixed right-6 bottom-6 p-3 rounded-full bg-emerald-600 text-white shadow-lg">
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="fixed right-6 bottom-20 p-3 rounded-full bg-emerald-600 text-white shadow-lg hidden sm:block">
         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
           <path d="M12 2v20M2 12h20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
